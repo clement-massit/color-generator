@@ -1,0 +1,5 @@
+huggingface-hub==0.34.4
+sentence-transformers==5.1.0
+numpy==2.3.3
+
+
