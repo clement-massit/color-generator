@@ -17,11 +17,16 @@ class PaletteGenerator:
         self.colors = colors
         self.embedding_model = self._load_model()
         self.color_embeddings = self.compute_embeddings_corpus()
-        self.prompt = self.get_user_input()
         
-        palette = self.generate_palette(self.prompt)
-        for color in palette: 
-            print(f"{self.colors[color['corpus_id']]['name']}: {self.colors[color['corpus_id']]['hex']}  {round(color['score'], 2)}")
+        
+        
+        while True:
+            self.prompt = self.get_user_input()
+            palette = self.generate_palette(self.prompt)
+            for color in palette: 
+                
+                self.print_colored_hex(f"{self.colors[color['corpus_id']]['name']}: {self.colors[color['corpus_id']]['hex']}  {round(color['score'], 2)}",
+                                       self.colors[color['corpus_id']]['hex'])
     
     def _login_to_hf(self):
         if self.config.TOKEN:
@@ -69,10 +74,17 @@ class PaletteGenerator:
         prompt = input("Enter a prompt: ")
         return prompt
     
+    def print_colored_hex(self, text, hex_color):
+        hex_color = hex_color.lstrip('#')
+        r, g, b = tuple(int(hex_color[i:i+2], 16) for i in (0, 2, 4))
+      
+        print(f"\033[38;2;{r};{g};{b}m{text}\033[0m")
+    
 if __name__ == "__main__":
     
+    
     def prepare_colors():
-        with open('COLOR_DATA.json','r',encoding='utf-8') as f:
+        with open('colors.json','r',encoding='utf-8') as f:
             colors = json.load(f)['colors']
         return colors
             
