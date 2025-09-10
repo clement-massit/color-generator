@@ -1,1 +1,1 @@
-# colro-generator
+# color-generator
